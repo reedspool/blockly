@@ -205,30 +205,33 @@ function packageCore() {
 function packageNode() {
   return gulp.src('scripts/package/node/index.js')
     .pipe(packageCommonJS('Blockly', [{
-        name: 'Blockly',
-        cjs: './core',
-      },{
-        name: 'En',
-        cjs: './msg/en',
-      },{
-        name: 'BlocklyBlocks',
-        cjs: './blocks',
-      },{
-        name: 'BlocklyJS',
-        cjs: './javascript',
-      },{
-        name: 'BlocklyPython',
-        cjs: './python',
-      },{
-        name: 'BlocklyPHP',
-        cjs: './php',
-      },{
-        name: 'BlocklyLua',
-        cjs: './lua',
-      }, {
-        name: 'BlocklyDart',
-        cjs: './dart',
-      }]))
+      name: 'Blockly',
+      cjs: './core',
+    }, {
+      name: 'En',
+      cjs: './msg/en',
+    }, {
+      name: 'BlocklyBlocks',
+      cjs: './blocks',
+    }, {
+      name: 'BlocklyJS',
+      cjs: './javascript',
+    }, {
+      name: 'BlocklyPython',
+      cjs: './python',
+    }, {
+      name: 'BlocklyPHP',
+      cjs: './php',
+    }, {
+      name: 'BlocklyLua',
+      cjs: './lua',
+    }, {
+      name: 'BlocklyHyperscript',
+      cjs: './hyperscript',
+    }, {
+      name: 'BlocklyDart',
+      cjs: './dart',
+    }]))
     .pipe(gulp.rename('node.js'))
     .pipe(gulp.dest(RELEASE_DIR));
 };
@@ -295,6 +298,14 @@ function packagePython() {
  */
 function packageLua() {
   return packageGenerator('lua_compressed.js', 'lua.js', 'Lua');
+};
+
+/**
+ * This task wraps hyperscript_compressed.js into a UMD module.
+ * @example import 'blockly/hyperscript';
+ */
+function packageHyperscript() {
+  return packageGenerator('hyperscript_compressed.js', 'hyperscript.js', 'Hyperscript');
 };
 
 /**
@@ -416,30 +427,31 @@ function cleanReleaseDir(done) {
  * them into the release directory.
  */
 const package = gulp.series(
-    checkBuildDir,
-    cleanReleaseDir,
-    gulp.parallel(
-        packageIndex,
-        packageSources,
-        packageCompressed,
-        packageBrowser,
-        packageNode,
-        packageCore,
-        packageNodeCore,
-        packageBlockly,
-        packageBlocks,
-        packageJavascript,
-        packagePython,
-        packageLua,
-        packageDart,
-        packagePHP,
-        packageLocales,
-        packageMedia,
-        packageUMDBundle,
-        packageJSON,
-        packageReadme,
-        packageDTS)
-    );
+  checkBuildDir,
+  cleanReleaseDir,
+  gulp.parallel(
+    packageIndex,
+    packageSources,
+    packageCompressed,
+    packageBrowser,
+    packageNode,
+    packageCore,
+    packageNodeCore,
+    packageBlockly,
+    packageBlocks,
+    packageJavascript,
+    packagePython,
+    packageLua,
+    packageHyperscript,
+    packageDart,
+    packagePHP,
+    packageLocales,
+    packageMedia,
+    packageUMDBundle,
+    packageJSON,
+    packageReadme,
+    packageDTS)
+);
 
 module.exports = {
   cleanReleaseDir: cleanReleaseDir,
