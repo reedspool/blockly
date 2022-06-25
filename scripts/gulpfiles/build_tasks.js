@@ -122,6 +122,11 @@ const chunks = [
     reexport: 'Blockly.PHP',
   },
   {
+    name: 'hyperscript',
+    entry: 'generators/hyperscript/all.js',
+    reexport: 'Blockly.Hyperscript',
+  },
+  {
     name: 'lua',
     entry: 'generators/lua/all.js',
     reexport: 'Blockly.Lua',
